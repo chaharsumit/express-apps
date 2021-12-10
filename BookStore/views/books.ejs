@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <a href="/">bookstore</a>
+  <a href="/books/new">add book</a>
+  <h1>books list page</h1>
+
+  <section>
+    <% books.forEach(book => { %>
+      <div>
+        <h1><%= book.title%></h1>
+        <p><%= book.description.substr(0, 100) + " ... " %></p>
+        <a href="/books/<%= book._id %>">show more</a>
+      </div>
+    <% }) %>
+  </section>
+</body>
+</html>

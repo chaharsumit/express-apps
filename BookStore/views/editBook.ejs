@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <h1>edit form</h1>
+  <form action="/books/<%= book.id %>" method="POST">
+    <input type="text" name="title" placeholder="title" value="<%= book.title %>">
+    <textarea name="description" cols="30" rows="5" placeholder="description">
+      <%= book.description %>
+    </textarea>
+    <input type="Number" name="price" placeholder="price" value="<%= book.price %>">
+    <input type="text" name="author" placeholder="author" value="<%= book.author %>">
+    <input type="submit" value="submit">
+  </form>
+</body>
+</html>
