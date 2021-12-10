@@ -16,6 +16,7 @@ router.get('/new', (req, res) => {
   res.render('addBook');
 });
 
+/*
 router.get('/:id', (req, res) => {
   let id = req.params.id;
   Book.findById(id, (err, book) => {
@@ -26,6 +27,17 @@ router.get('/:id', (req, res) => {
       res.render('bookDetails', { book: book, comments: comments });
     })
   });
+})
+*/
+
+router.get('/:id', (req, res, next) => {
+  let id = req.params.id;
+  Book.findById(id).populate('comments').exec((err, book) => {
+    if(err){
+      return next(err);
+    }
+    res.render('bookDetails', { book: book });
+  })
 })
 
 router.get('/:id/edit', (req, res) => {
@@ -38,13 +50,18 @@ router.get('/:id/edit', (req, res) => {
   });
 })
 
-router.get('/:id/delete', (req, res) => {
+router.get('/:id/delete', (req, res, next) => {
   let id = req.params.id;
   Book.findByIdAndDelete(id, (err, book) => {
     if(err){
       return next(err);
     }
-    res.redirect('/books');
+    Comment.deleteMany({ bookId: book.id }, (err, info) => {
+      if(err){
+        return next(err);
+      }
+      res.redirect('/books');
+    });
   })
 })
 
@@ -64,16 +81,21 @@ router.post('/', (req, res, next) => {
   })
 });
 
-router.post('/:id/comments', (req, res) => {
+router.post('/:id/comments', (req, res, next) => {
   let id = req.params.id;
   req.body.bookId = id;
   Comment.create(req.body, (err, comment) => {
     if(err){
       return next(err);
     }
-    res.redirect('/books/' + id);
+    Book.findByIdAndUpdate(id, { $push: { comments: comment._id } }, (err, updatedBook) => {
+      if(err){
+        return next(err);
+      }
+      res.redirect('/books/' + id);
+    });
   });
 })
 
 
-module.exports = router;
+module.exports = router; 

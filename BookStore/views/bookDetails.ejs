@@ -20,7 +20,7 @@
   </form>
 
   <h2>Comments list</h2>
-  <% comments.forEach(comment => { %>
+  <% book.comments.forEach(comment => { %>
     <div>
       <p><%= comment.content %></p>
       <a href="/comments/<%= comment.id %>/edit">edit comment</a>

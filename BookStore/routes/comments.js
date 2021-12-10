@@ -1,4 +1,5 @@
 let express = require('express');
+const Book = require('../models/book');
 let router = express.Router();
 
 let Comment = require('../models/comment');
@@ -29,7 +30,9 @@ router.get('/:id/delete', (req, res, next) => {
     if(err){
       return next(err);
     }
-    res.redirect('/books/' + deletedComment.bookId);
+    Book.findByIdAndUpdate(deletedComment.bookId, {$pull: { comments: deletedComment._id }}, (err, book) => {
+      res.redirect('/books/' + deletedComment.bookId);
+    })
   })
 })
 
