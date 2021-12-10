@@ -1,5 +1,4 @@
 let express = require('express');
-const { findById } = require('../models/book');
 let router = express.Router();
 let Book = require('../models/book');
 let Comment = require('../models/comment');
@@ -9,7 +8,7 @@ router.get('/', (req, res) => {
     if(err){
       return next(err);
     } 
-    res.render('books', { books: books });
+    res.render('books', { books: books })
   });
 })
 
@@ -23,7 +22,9 @@ router.get('/:id', (req, res) => {
     if(err){
       return next(err);
     }
-    res.render('bookDetails', { book: book });
+    Comment.find({bookId: id}, (err, comments) => {
+      res.render('bookDetails', { book: book, comments: comments });
+    })
   });
 })
 

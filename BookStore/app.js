@@ -4,6 +4,7 @@ let path = require('path');
 
 let indexRouter = require('./routes/index');
 let booksRouter = require('./routes/books');
+let commentsRouter = require('./routes/comments');
 
 mongoose.connect('mongodb://localhost/bookstore', (err) => {
   console.log(err ? err : "Database is successfully connnected");
@@ -20,6 +21,7 @@ app.use(express.static(path.join(__dirname, "/public")));
 
 app.use('/', indexRouter);
 app.use('/books', booksRouter);
+app.use('/comments', commentsRouter);
 
 app.use((req, res, next) => {
   res.send('404 Page Not Found!!');

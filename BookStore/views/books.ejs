@@ -16,7 +16,7 @@
       <div>
         <h1><%= book.title%></h1>
         <p><%= book.description.substr(0, 100) + " ... " %></p>
-        <a href="/books/<%= book._id %>">show more</a>
+        <a href="/books/<%= book.id %>">show more</a>
       </div>
     <% }) %>
   </section>
