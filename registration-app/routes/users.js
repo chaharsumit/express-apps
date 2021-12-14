@@ -17,12 +17,15 @@ router.post('/register', (req, res, next) => {
 })
 
 router.get('/login', (req, res) => {
-  res.render('login');
+  console.log(req.session);
+  var error = req.flash('error');
+  res.render('login', { error });
 })
 
 router.post('/login', (req, res) => {
   var { email, password } = req.body;
   if(!email || !password){
+    req.flash('error', "email/password required");
     return res.redirect('/users/login');
   }
   User.findOne({ email }, (err, user) => {
@@ -43,6 +46,12 @@ router.post('/login', (req, res) => {
       res.redirect('/');
     })
   })
+})
+
+router.get('/logout',(req, res, next) => {
+  req.session.destroy();
+  res.clearCookie('connect.sid');
+  res.redirect('/users/login');
 })
 
 
