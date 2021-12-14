@@ -23,22 +23,24 @@ router.get('/login', (req, res) => {
 router.post('/login', (req, res) => {
   var { email, password } = req.body;
   if(!email || !password){
-    res.redirect('/users/login');
+    return res.redirect('/users/login');
   }
   User.findOne({ email }, (err, user) => {
     if(err){
       return next(err);
     }
     if(!user){
-      res.redirect('/users/login');
+      return res.redirect('/users/login');
     }
     user.verifyPassword(password, (err, result) => {
       if(err){
         return next(err);
       }
       if(!result){
-        res.redirect('/users/login');
+        return res.redirect('/users/login');
       }
+      req.session.userId = user.id;
+      res.redirect('/');
     })
   })
 })
